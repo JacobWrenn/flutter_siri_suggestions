@@ -39,6 +39,7 @@ class FlutterSiriSuggestions {
   //       super();
 
   MessageHandler _onLaunch;
+  Map<String, dynamic> mostRecentLaunch;
 
   static const MethodChannel _channel =
       const MethodChannel('flutter_siri_suggestions');
@@ -63,6 +64,7 @@ class FlutterSiriSuggestions {
   Future<dynamic> _handleMethod(MethodCall call) async {
     switch (call.method) {
       case "onLaunch":
+        mostRecentLaunch = call.arguments.cast<String, dynamic>();
         return _onLaunch(call.arguments.cast<String, dynamic>());
       default:
         throw UnsupportedError("Unrecognized JSON message");
