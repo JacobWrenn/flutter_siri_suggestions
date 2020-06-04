@@ -4,12 +4,15 @@ import 'package:flutter/services.dart';
 typedef Future<dynamic> MessageHandler(Map<String, dynamic> message);
 
 class FlutterSiriActivity {
-  const FlutterSiriActivity(this.title,
-      {this.contentDescription,
-      this.isEligibleForSearch = true,
-      this.isEligibleForPrediction = true,
-      this.suggestedInvocationPhrase})
-      : assert(title != null),
+  const FlutterSiriActivity(
+    this.title, {
+    this.contentDescription,
+    this.isEligibleForSearch = true,
+    this.isEligibleForPrediction = true,
+    this.suggestedInvocationPhrase,
+    this.persistentIdentifier,
+    this.userInfo,
+  })  : assert(title != null),
         super();
 
   final String title;
@@ -17,6 +20,8 @@ class FlutterSiriActivity {
   final bool isEligibleForSearch;
   final bool isEligibleForPrediction;
   final String suggestedInvocationPhrase;
+  final String persistentIdentifier;
+  final Map userInfo;
 }
 
 class FlutterSiriSuggestions {
@@ -44,7 +49,9 @@ class FlutterSiriSuggestions {
       'contentDescription': activity.contentDescription,
       'isEligibleForSearch': activity.isEligibleForSearch,
       'isEligibleForPrediction': activity.isEligibleForPrediction,
-      'suggestedInvocationPhrase': activity.suggestedInvocationPhrase ?? ""
+      'suggestedInvocationPhrase': activity.suggestedInvocationPhrase ?? "",
+      'persistentIdentifier': activity.persistentIdentifier ?? activity.title,
+      'userInfo': activity.userInfo ?? {},
     });
   }
 

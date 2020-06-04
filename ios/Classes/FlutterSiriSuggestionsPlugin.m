@@ -39,17 +39,21 @@ NSString *kPluginName = @"flutter_siri_suggestions";
     
     NSString *title = [arguments objectForKey:@"title"];
     NSNumber *isEligibleForSearch = [arguments objectForKey:@"isEligibleForSearch"];
+    NSString *persistentIdentifier = [arguments objectForKey:@"persistentIdentifier"];
     NSNumber *isEligibleForPrediction = [arguments objectForKey:@"isEligibleForPrediction"];
     NSString *contentDescription = [arguments objectForKey:@"contentDescription"];
     NSString *suggestedInvocationPhrase = [arguments objectForKey:@"suggestedInvocationPhrase"];
+    NSDictionary *userInfo = [arguments objectForKey:@"userInfo"];
     
     if (@available(iOS 9.0, *)) {
         
         NSUserActivity *activity = [[NSUserActivity alloc] initWithActivityType:kPluginName];
         
         [activity setEligibleForSearch:[isEligibleForSearch boolValue]];
+        [activity setUserInfo:userInfo];
 
         if (@available(iOS 12.0, *)) {
+            [activity setPersistentIdentifier:persistentIdentifier];
             [activity setEligibleForPrediction:[isEligibleForPrediction boolValue]];
         }
         
@@ -80,10 +84,6 @@ NSString *kPluginName = @"flutter_siri_suggestions";
 }
 
 - (void)onAwake:(NSUserActivity*) userActivity {
-    if (@available(iOS 9.0, *)) {
-        [userActivity resignCurrent];
-        [userActivity invalidate];
-    }
     [_channel invokeMethod:@"onLaunch" arguments:[userActivity userInfo]];
 }
 
